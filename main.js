@@ -1,11 +1,11 @@
 const currentMain = document.querySelector('.firstN');
+const smallDisplay = document.querySelector('.thirdN');
+const undoBtn = document.querySelector('.undo');
+const numButtons = document.querySelectorAll('.num');
 const decimalBtn = document.querySelector('.decimal');
 const clearBtn = document.querySelector('.clear');
-const numButtons = document.querySelectorAll('.num');
-const undoBtn = document.querySelector('.undo');
 const operatorBtn = document.querySelectorAll('.operator');
 const equalBtn = document.querySelector('.equal');
-const smallDisplay = document.querySelector('.thirdN');
 
 let previousNum = '';
 let currentNum = '';
@@ -22,7 +22,7 @@ numButtons.forEach(el => el.addEventListener('click', () => {
     currentNum += el.innerText;
     smallDis += el.innerText;
     updateDispalys();
-}))
+}));
 
 function clearFunc(){
     previousNum = '';
@@ -35,10 +35,9 @@ function clearFunc(){
 // clear button
 clearBtn.addEventListener('click', () => {
     clearFunc();
-})
+});
 
-// how to use decimal one times
-decimalBtn.addEventListener('click', () => {
+function decimalFunc() {
     if(currentNum.includes('.')){
         return;
     }
@@ -47,12 +46,22 @@ decimalBtn.addEventListener('click', () => {
         smallDis += `${decimalBtn.innerText}`
         updateDispalys();
     }
+}
+
+// how to use decimal one times
+decimalBtn.addEventListener('click', () => {
+   decimalFunc();
 })
+
+function undoFunc(){
+    currentNum = currentNum.slice(0, -1);
+    smallDis = smallDis.slice(0, -1);
+    updateDispalys();
+}
 
 // undo button
 undoBtn.addEventListener('click', () => {
-    currentNum = currentNum.slice(0, -1);
-    updateDispalys();
+    undoFunc();
 })
 
 function mathFunctions(mathSymbol){
@@ -114,9 +123,10 @@ function removeDecimal(n){
         currentNum = String(n);
     }
 }
-
+let kafka = 0;
 equalBtn.addEventListener('click', () => {
-    console.log(mathOperators, currentNum);
+    kafka += 1;
+    console.log("kafka",kafka);
     if(mathOperators === '/' && currentNum === '0') {
         clearFunc();
         alert("u cannot divide number by zero which is an invalid operation in mathematics !");
@@ -134,3 +144,39 @@ equalBtn.addEventListener('click', () => {
     mathOperators = '';
     updateDispalys();
 })
+
+function handleKeyboardInput(event) {
+    const pressedKey = event.key;
+    const operati = ['+', '-', '/', '*'];
+  
+    if (/^[0-9]$/.test(pressedKey)) {
+      const buttonToClick = Array.from(numButtons).find(button => button.innerText === pressedKey);
+        if (buttonToClick) {
+        buttonToClick.click();
+        }
+    }
+
+    else if (pressedKey === '.') {
+      decimalBtn.click();
+    }
+
+    else if (pressedKey === 'Backspace') {
+      undoBtn.click();
+    }
+
+    else if (pressedKey === 'Enter') {
+      equalBtn.click();
+    }
+
+    else if(operati.includes(pressedKey)) {
+        operations(pressedKey);
+        mathOperators += pressedKey;
+    }
+
+    else if(pressedKey === 'c') {
+        clearFunc();
+    }
+    console.log(pressedKey,typeof pressedKey);
+  }
+
+  document.addEventListener('keydown', handleKeyboardInput);
