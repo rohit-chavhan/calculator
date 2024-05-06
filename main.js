@@ -181,7 +181,7 @@ equalBtn.addEventListener('click', () => {
 
 function handleKeyboardInput(event) {
     const pressedKey = event.key;
-    const operati = ['+', '-', '/', '*'];
+    const operati = ['+', '-', '/'];
   
     if (/^[0-9]$/.test(pressedKey)) {
       const buttonToClick = Array.from(numButtons).find(button => button.innerText === pressedKey);
@@ -202,7 +202,13 @@ function handleKeyboardInput(event) {
       equalBtn.click();
     }
 
+    else if(pressedKey === '*') {
+        operations('x');
+        mathOperators += 'x';
+    }
+
     else if(operati.includes(pressedKey)) {
+        console.log(operati, pressedKey);
         operations(pressedKey);
         mathOperators += pressedKey;
     }
