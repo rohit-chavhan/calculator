@@ -33,11 +33,7 @@ numButtons.forEach(el => el.addEventListener('click', () => {
 // wipe outs all data, start new
 
 function clearFunc(){
-    previousNum = '';
-    currentNum = '';
-    mathOperators = '';
-    smallDis = '';
-    updateDispalys();
+    location.reload();
 }
 
 // clear button
@@ -83,7 +79,6 @@ undoBtn.addEventListener('click', () => {
 // checks math operator and run that type of funcion on it
 
 function mathFunctions(mathSymbol){
-    console.log(`inside math function cNum is ${currentNum} pNum ${previousNum} and mathsymbol is ${mathSymbol}` );
     currentNum = Number(currentNum);
     previousNum = Number(previousNum);
 
@@ -113,22 +108,18 @@ function addintToSmall(x){
    else => if both values are filled we run our operations */
 
 function operations(n) {
-    console.log(n);
     if(previousNum === '') {
-        console.log("first if");
         previousNum = currentNum;
         addintToSmall(n);
         updateDispalys();
     } 
 
     else if(usedEqual !== 0){
-        console.log("else if run of equal");
         addintToSmall(n);
         usedEqual -= 1;
     }
 
     else {
-        console.log("last else means math functions run");
         mathFunctions(mathOperators);
         smallDis += ` = ${currentNum} ${n} `;
         previousNum = currentNum;
@@ -156,7 +147,6 @@ function removeDecimal(n){
 // equal button checks for running equal empty numbers
 
 equalBtn.addEventListener('click', () => {
-    console.log("we pressed equal button");
     if(mathOperators === '/' && currentNum === '0') {
         clearFunc();
         alert("u cannot divide number by zero which is an invalid operation in mathematics !");
@@ -208,7 +198,6 @@ function handleKeyboardInput(event) {
     }
 
     else if(operati.includes(pressedKey)) {
-        console.log(operati, pressedKey);
         operations(pressedKey);
         mathOperators += pressedKey;
     }
